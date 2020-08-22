@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 //material ui
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,22 +14,35 @@ const useStyles = makeStyles({
         border: '1px solid grey',
     }
 })
-const Board = ({squares}) => {
+const Board = ({squares, setSquares }) => {
     const classes = useStyles();
     
-    
-    const toggleSquare = () => {
 
-    }
+    useEffect(() => {
+
+    }, [squares])
+
     return (
         <Grid container className={classes.container}>
             {
-                squares.map((row)=> 
-                    squares.map(column => <Grid item 
-                                                row={row} 
-                                                column={column} 
+                squares.map((rows, i)=> 
+                    rows.map((column, k) => <Grid item
+                                                key={`${i}-${k}`}
+                                                row={i} 
+                                                column={k} 
                                                 className={classes.gridSquare} 
-                                                onClick={toggleSquare}
+                                                onClick={(event) => {
+                    
+                                                    const updated = squares[i].splice([k], 1, 1)
+                                                    setSquares([...squares])
+                                                    // console.log('up', updated)
+                                                    // setSquares()
+                                                    // setSquares([ ...squares, squares[i][k] = 1 ] )
+                                                    // squares[i][k] = 1
+                                                }}
+                                                style={{
+                                                    backgroundColor: squares[i][k] == 0 ? null : 'red'
+                                                }}
                                                 />))
             }
         </Grid>

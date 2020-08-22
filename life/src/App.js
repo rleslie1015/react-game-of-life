@@ -44,9 +44,17 @@ import {
   // state
   const [gen, setGen] = useState(1);
   const [isRunning, setIsRunning] = useState(false);
-  const [squares, setSquares] = useState(Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0)))
-
-
+  const [squares, setSquares] = useState(() => {
+    return  Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
+  })
+  // const [squares, setSquares] = useState(() => {
+  //   const rows = []
+  //   for (let i = 0; i < 25; i++){
+  //     rows.push(Array.from(Array(25), () => 0))
+  //   } 
+  //   return rows
+  // })
+  console.log(squares)
   return (
     <Container>
       <header>
@@ -59,7 +67,7 @@ import {
 
         <Grid item xs={7} className={classes.board}>
             <Typography>Generation: 0</Typography>
-            <Board squares={squares}/>
+            <Board squares={squares} setSquares={setSquares} />
         </Grid>
 
         {/* Game controls */}
