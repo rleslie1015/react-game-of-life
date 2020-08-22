@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+
 //material ui
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,9 +17,9 @@ const useStyles = makeStyles({
 });
 const Board = ({ squares, setSquares }) => {
   const classes = useStyles();
-
   return (
     <Grid container className={classes.container}>
+  
       { // outter map loops through the rows 
         // inner map loops through the columns 
         //this creates the grid

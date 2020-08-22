@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import {useCountRenders} from './useCountRenders'
+import clonedeep from 'lodash.clonedeep';
+import Counter from './Counter';
 //components
 import Board from './Board';
 import Rules from './Rules';
@@ -12,15 +15,11 @@ import {
   Grid,
   Button,
   ButtonGroup
- } from '@material-ui/core';
+} from '@material-ui/core';
 
- import { makeStyles } from '@material-ui/core/styles';
- 
- const useStyles = makeStyles({
-   board: {
-    // border: '1px solid red',
-    // height: '100vh',
-   },
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
   rulesSection: {
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     borderRadius: 3,
@@ -42,17 +41,29 @@ import {
 });
 
 
- function App() {
+const App = () => {
+
+  useCountRenders();
+
   const classes = useStyles();
   // state
   const [gen, setGen] = useState(0);
+  const genRef = useRef()
+  genRef.current = gen
+
   const [isRunning, setIsRunning] = useState(false);
+  const runningRef = useRef()
+  runningRef.current = isRunning
+
   // the following constructs a two dimensional array 
   // 25 arrays with length of 25 and every value in each array is 0
   const [squares, setSquares] = useState(() => { // using an arrow function so this only renders once
     return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
   })
   
+  useEffect(()=>{
+
+  }, [squares, isRunning])
 
   // function for counting neighbors takes in the index of row and column
   const countLiveNeibors = (r, c) => {
@@ -73,8 +84,7 @@ import {
 
       // you can get all neibors by adding or subtracting 0, -1, or 1 each time 
       // 0, 0 -> 0 + 0 and 0 + 1 == 0, 1
-
-    // set a variable for the count 
+      // set a variable for the count 
     let liveCount = 0;
 
     // how to check each neibor
@@ -84,46 +94,94 @@ import {
 
     // ?????????????????????????????????????????????????????????????????????????????????????????????????
 
-       
+      
+      for (let x = -1; x <= 1; x += 1) { // loops through numbers -1, 0, and 1
+        for (let y = -1; y <= 1; y += 1) { // loops through numbers -1, 0, and 1
+          
+          let i = r + x,
+              j = c + y;
+        
+        
+            // if i is within range && j is within range && !(y === 0 && x === 0) // not itself && squares[i][j]) { // square is live (not 0)
+          if (i >= 0 && i < 25 && j >= 0 && j < 25 && !(x === 0 && y === 0) && squares[i][j]) { 
+                // console.log('live', i, j)
+                liveCount += 1; 
+              }
+      } 
+    }
+ 
     // return the count
     return liveCount;
   }
 
-  const runSimulation = () => {
-    // update generation
-    setGen(gen + 1)
 
-    // if simulation is stopped return
-    if (isRunning == false) {
-      return;
-    }
+// use callback is used to prevent function from being created every render
+
+  const runSimulation = useCallback(() => {
+     // update generation
+     setGen(gen + 1)
+
+     // if simulation is stopped return
+     if (runningRef.current == false) {
+       return;
+     }
+    //  for all values that change in this function we need to store in REFs current values
+    let tempboard = clonedeep(squares)
+    // setSquares((squares) => {
+    //   let tempboard = clonedeep(squares)
+    //   // loop over each square checking for the status of live neibors
+    //   for (let i = 0; i < 25; i++){
+    //     for (let j = 0; j < 25; j++){
+    //        // check neibors
+    //        let neighbors = countLiveNeibors(i, j)
+    //        console.log(neighbors)
+    //        // if/else statement --> if for if square is alive and else for if square is dead
+    //        if (squares[i][j]) {
+    //          // if 1 or no neighbors or if more than 4 neibors
+    //          if (neighbors <= 1 || neighbors >= 4){
+    //            // it dies
+    //            tempboard[i][j] = 0
+    //          }
+    //        } else {
+    //          // if the perfect amount of neighbors
+    //          if (neighbors == 3) {
+    //            // dead square comes alive 
+    //            tempboard[i][j] = 1
+    //          }
+    //        }
+    //     }
+    //   }
+    // })
+   
 
     // loop over each square checking for the status of live neibors
-    squares.forEach((row, i) =>{
-      row.forEach((column, j) =>{
-
-        // check neibors
-        let neighbors = countLiveNeibors(i, j)
-        // console.log(neighbors)
-        // if/else statement --> if for if square is alive and else for if square is dead
-        if (squares[i][j]) {
-          // if 1 or no neighbors or if more than 4 neibors
-          if (neighbors <= 1 || neighbors >= 4){
-            // it dies
-            squares[i][j] = 0
-          }
-        } else {
-          // if the perfect amount of neighbors
-          if (neighbors == 3) {
-            // dead square comes alive 
-            squares[i][j] = 1
-          }
-        }
-      })
-    })
+    for (let i = 0; i < 25; i++){
+      for (let j = 0; j < 25; j++){
+         // check neibors
+         let neighbors = countLiveNeibors(i, j)
+         console.log('neighbors', neighbors)
+         // if/else statement --> if for if square is alive and else for if square is dead
+         if (squares[i][j]) {
+           // if 1 or no neighbors or if more than 4 neibors
+           if (neighbors <= 1 || neighbors >= 4){
+             // it dies
+             squares[i][j] = 0
+            //  setSquares([...tempboard])
+           }
+         } else {
+           // if the perfect amount of neighbors
+           if (neighbors == 3) {
+             // dead square comes alive 
+             squares[i][j] = 1
+            //  setSquares([...tempboard])
+           }
+         }
+      }
+    }
+  
     // recursively call the function again every second
-    setTimeout(runSimulation, 1000);
-  }
+    setTimeout(runSimulation, 4000);
+  }, [])
 
   const startSimulation = () => {
     // sets running state
@@ -135,6 +193,7 @@ import {
   const stopSimulation = () => {
     // sets running state
     setIsRunning(false)
+    setGen(0)
   }
 
   const preset1 = () => {
@@ -151,7 +210,6 @@ import {
         <Grid item xs={12} md={4} className={classes.rulesSection}>
           <Rules/>
         </Grid>
-
         <Grid item xs={12} md={7} className={classes.board}>
             <Typography>Generation: {gen} </Typography>
             <Board squares={squares} setSquares={setSquares} />
