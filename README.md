@@ -1,7 +1,6 @@
 
 # React Game Of Life
 
-  - 
 John Conways Game of Life is a cellular automation.
 What in tarnation is  **that**, you ask?
 
