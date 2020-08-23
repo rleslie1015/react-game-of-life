@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {useCountRenders} from './useCountRenders'
 import clonedeep from 'lodash.clonedeep';
-import Counter from './Counter';
+
 //components
 import Board from './Board';
 import Rules from './Rules';
@@ -61,9 +61,7 @@ const App = () => {
     return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
   })
   
-  useEffect(()=>{
 
-  }, [squares, isRunning])
 
   // function for counting neighbors takes in the index of row and column
   const countLiveNeibors = (r, c) => {
@@ -119,7 +117,7 @@ const App = () => {
 
   const runSimulation = useCallback(() => {
      // update generation
-     setGen(gen + 1)
+     setGen(genRef.current += 1)
 
      // if simulation is stopped return
      if (runningRef.current == false) {
@@ -127,39 +125,14 @@ const App = () => {
      }
     //  for all values that change in this function we need to store in REFs current values
     let tempboard = clonedeep(squares)
-    // setSquares((squares) => {
-    //   let tempboard = clonedeep(squares)
-    //   // loop over each square checking for the status of live neibors
-    //   for (let i = 0; i < 25; i++){
-    //     for (let j = 0; j < 25; j++){
-    //        // check neibors
-    //        let neighbors = countLiveNeibors(i, j)
-    //        console.log(neighbors)
-    //        // if/else statement --> if for if square is alive and else for if square is dead
-    //        if (squares[i][j]) {
-    //          // if 1 or no neighbors or if more than 4 neibors
-    //          if (neighbors <= 1 || neighbors >= 4){
-    //            // it dies
-    //            tempboard[i][j] = 0
-    //          }
-    //        } else {
-    //          // if the perfect amount of neighbors
-    //          if (neighbors == 3) {
-    //            // dead square comes alive 
-    //            tempboard[i][j] = 1
-    //          }
-    //        }
-    //     }
-    //   }
-    // })
-   
+ 
 
     // loop over each square checking for the status of live neibors
     for (let i = 0; i < 25; i++){
       for (let j = 0; j < 25; j++){
          // check neibors
          let neighbors = countLiveNeibors(i, j)
-         console.log('neighbors', neighbors)
+        //  console.log('neighbors', neighbors)
          // if/else statement --> if for if square is alive and else for if square is dead
          if (squares[i][j]) {
            // if 1 or no neighbors or if more than 4 neibors
@@ -170,7 +143,7 @@ const App = () => {
            }
          } else {
            // if the perfect amount of neighbors
-           if (neighbors == 3) {
+           if (neighbors === 3) {
              // dead square comes alive 
              squares[i][j] = 1
             //  setSquares([...tempboard])
@@ -180,7 +153,7 @@ const App = () => {
     }
   
     // recursively call the function again every second
-    setTimeout(runSimulation, 4000);
+    setTimeout(runSimulation, 1000);
   }, [])
 
   const startSimulation = () => {
