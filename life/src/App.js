@@ -53,7 +53,7 @@ import {
     return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
   })
   
-
+  let t;
   // function for counting neighbors takes in the index of row and column
   const countLiveNeibors = (r, c) => {
     // for squares[i][j] example squares[1][1] the neighbors are
@@ -84,12 +84,32 @@ import {
 
     // ?????????????????????????????????????????????????????????????????????????????????????????????????
 
-       
+       // loop through numbers needed to select all neibors 
+    for (let x = -1; x <= 1; x += 1) { // loops through numbers -1, 0, and 1
+      for (let y = -1; y <= 1; y += 1) { // loops through numbers -1, 0, and 1
+        
+        let i = r + x,
+            j = c + y;
+          console.log(i, j)
+          if (i >= 0 && i < 25 && j >= 0 && j < 25 && !(y === 0 && x === 0) ) {
+            console.log('test', i, j)
+          } // i is within range
+        
+          //if (i >= 0 && i < 25  // i is within range
+          //   && j >= 0 && j < 25 // j is within range
+          //   && !(y === 0 && x === 0) // not itself
+          //   && squares[i][j]) { // square is live (not 0)
+        if (i >= 0 && i < 25 && j >= 0 && j < 25 && !(y === 0 && x === 0) && squares[i][j]) { 
+              console.log('live', i, j)
+              liveCount += 1; 
+            }
+      } 
+    }
     // return the count
     return liveCount;
   }
 
-  const runSimulation = () => {
+   const runSimulation = () => {
     // update generation
     setGen(gen + 1)
 
@@ -114,7 +134,8 @@ import {
           }
         } else {
           // if the perfect amount of neighbors
-          if (neighbors == 3) {
+          if (neighbors === 3) {
+
             // dead square comes alive 
             squares[i][j] = 1
           }
@@ -122,7 +143,7 @@ import {
       })
     })
     // recursively call the function again every second
-    setTimeout(runSimulation, 1000);
+    t = setTimeout(runSimulation, 1000);
   }
 
   const startSimulation = () => {
@@ -133,6 +154,7 @@ import {
   }
 
   const stopSimulation = () => {
+    clearInterval(t)
     // sets running state
     setIsRunning(false)
   }
