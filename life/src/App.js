@@ -6,7 +6,7 @@ import { cloneDeep } from 'lodash';
 import Board from './Board';
 import Rules from './Rules';
 // preset data
-import {squares1} from './presets';
+import {preset2} from './presets';
 
 // material ui
 import {
@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 });
 
 const clearSquares = () => {
-  return Array.from({length: 10}).map(() => Array.from({length: 5}).fill(0))
+  return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
 }
 
 
@@ -109,7 +109,7 @@ const App = () => {
         
         
             // if i is within range && j is within range && !(y === 0 && x === 0) // not itself && square is live (not 0)
-          if (i >= 0 && i < 10 && j >= 0 && j < 5 && !(x === 0 && y === 0) && squares[i][j]) { 
+          if (i >= 0 && i < 5 && j >= 0 && j < 5 && !(x === 0 && y === 0) && squares[i][j]) { 
                 console.log('live', i, j)
                 liveCount += 1; 
               }
@@ -138,7 +138,7 @@ const App = () => {
       for (let j = 0; j < 25; j++){
         let neighbors = 0
         console.log(`squares[${i}][${j}]`)
-        neighbors = countLiveNeibors(i, j)
+        neighbors = countLiveNeibors()
          // if/else statement --> if for if square is alive and else for if square is dead
          if (squares[i][j]) {
            // if 1 or no neighbors or if 4 or more neibors
@@ -192,9 +192,9 @@ const App = () => {
     setSquares(clearSquares())
   }
 
-  const preset1 = () => {
+  const setPreset = () => {
     // sets the square state with presets imported from presets file
-    setSquares([...squares1])
+    setSquares([...preset2])
     setGen(0)
   }
   
@@ -220,7 +220,7 @@ const App = () => {
             <Button onClick={resetSimulation}>Reset</Button>
           </ButtonGroup>
           <ButtonGroup className={classes.controls} color="primary" variant="contained" aria-label="Buttons for setting starting point with preset squares">
-            <Button onClick={preset1}>Preset 1</Button>
+            <Button onClick={setPreset}>Preset 1</Button>
           </ButtonGroup>
         </Grid>
       </Grid>
