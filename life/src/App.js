@@ -84,14 +84,31 @@ import {
 
     // ?????????????????????????????????????????????????????????????????????????????????????????????????
 
-       
+    // loop through numbers needed to select all neibors 
+    for (let x = -1; x <= 1; x += 1) { // loops through numbers -1, 0, and 1
+      for (let y = -1; y <= 1; y += 1) { // loops through numbers -1, 0, and 1
+        
+        let i = r + x,
+            j = c + y;
+    
+
+          //if (i >= 0 && i < 25  // i is within range
+          //   && j >= 0 && j < 25 // j is within range
+          //   && !(y === 0 && x === 0) // not itself
+          //   && squares[i][j]) { // square is live (not 0)
+        if (i >= 0 && i < 25 && j >= 0 && j < 25 && !(y === 0 && x === 0) && squares[i][j]) { 
+              // console.log('live', i, j)
+              liveCount += 1; 
+            }
+      }
+    }
     // return the count
     return liveCount;
   }
 
   const runSimulation = () => {
     // update generation
-    setGen(gen + 1)
+    
 
     // if simulation is stopped return
     if (isRunning == false) {
@@ -122,12 +139,14 @@ import {
       })
     })
     // recursively call the function again every second
-    setTimeout(runSimulation, 1000);
+    console.log(gen)
+    setTimeout(startSimulation, 1000);
   }
 
   const startSimulation = () => {
     // sets running state
     setIsRunning(true)
+    setGen((gen) => gen+=1)
     // call runSimulation() to start the algo
     runSimulation()
   }
@@ -140,6 +159,11 @@ import {
   const preset1 = () => {
     // sets the square state with presets imported from presets file
     setSquares([...squares1])
+  }
+
+  const resetSim = () => {
+    setSquares([])
+    setSquares(Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0)))
   }
   
   return (
@@ -162,7 +186,7 @@ import {
           <ButtonGroup className={classes.controls} color="primary" variant="contained" aria-label="Buttons for controlling game of life">
             <Button onClick={startSimulation}>Start</Button>
             <Button onClick={stopSimulation}>Stop</Button>
-            <Button>Reset</Button>
+            <Button onClick={resetSim}>Reset</Button>
           </ButtonGroup>
           <ButtonGroup className={classes.controls} color="primary" variant="contained" aria-label="Buttons for setting starting point with preset squares">
             <Button onClick={preset1}>Preset 1</Button>
