@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //components
 import Board from './Board';
 import Rules from './Rules';
 // preset data
-import {squares1} from './presets';
+import {squares1, squares2} from './presets';
 
 // material ui
 import {
@@ -17,10 +17,6 @@ import {
  import { makeStyles } from '@material-ui/core/styles';
  
  const useStyles = makeStyles({
-   board: {
-    // border: '1px solid red',
-    // height: '100vh',
-   },
   rulesSection: {
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     borderRadius: 3,
@@ -46,30 +42,17 @@ import {
   const classes = useStyles();
   // state
   const [gen, setGen] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(true);
   // the following constructs a two dimensional array 
   // 25 arrays with length of 25 and every value in each array is 0
   const [squares, setSquares] = useState(() => { // using an arrow function so this only renders once
     return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
   })
   
-  let t;
+  let timeout;
+
   // function for counting neighbors takes in the index of row and column
   const countLiveNeibors = (r, c) => {
-    // for squares[i][j] example squares[1][1] the neighbors are
-    // top neibors 
-      // 0, 0 ==== squares[i-1][j-1]
-      // 0, 1 ==== squares[i-1][j-0]
-      // 0, 2 ==== squares[i-1][j+1]
-
-    // side neibors
-      // 1, 0 ==== squares[i-0][j-1]
-      // 1, 2 ==== squares[i-0][j+1]
-
-    // bottom neibors
-      // 2, 0 ==== squares[i+1][j-1]
-      // 2, 1 ==== squares[i+1][j-0]
-      // 2, 2 ==== squares[i+1][j+1]
 
       // you can get all neibors by adding or subtracting 0, -1, or 1 each time 
       // 0, 0 -> 0 + 0 and 0 + 1 == 0, 1
@@ -77,44 +60,26 @@ import {
     // set a variable for the count 
     let liveCount = 0;
 
-    // how to check each neibor
-    // we have i and j 
-    // we need to change i with -1, 0 and 1
-    //  we need to change i with -1, 0 and 1
-
-    // ?????????????????????????????????????????????????????????????????????????????????????????????????
-
-       // loop through numbers needed to select all neibors 
-    for (let x = -1; x <= 1; x += 1) { // loops through numbers -1, 0, and 1
-      for (let y = -1; y <= 1; y += 1) { // loops through numbers -1, 0, and 1
+    // loop through numbers needed to select all neibors 
+    for (let x = -1; x <= 1; x += 1) {
+      for (let y = -1; y <= 1; y += 1) { 
         
         let i = r + x,
             j = c + y;
-          console.log(i, j)
-          if (i >= 0 && i < 25 && j >= 0 && j < 25 && !(y === 0 && x === 0) ) {
-            console.log('test', i, j)
-          } // i is within range
-        
-          //if (i >= 0 && i < 25  // i is within range
-          //   && j >= 0 && j < 25 // j is within range
-          //   && !(y === 0 && x === 0) // not itself
-          //   && squares[i][j]) { // square is live (not 0)
+
+          //if (i >= 0 && i < 25  // i is within range  && j >= 0 && j < 25 // j is within range && !(y === 0 && x === 0) // not itself  && squares[i][j]) { // square is live (not 0)
         if (i >= 0 && i < 25 && j >= 0 && j < 25 && !(y === 0 && x === 0) && squares[i][j]) { 
-              console.log('live', i, j)
               liveCount += 1; 
             }
-      } 
+      }
     }
     // return the count
     return liveCount;
   }
 
-   const runSimulation = () => {
-    // update generation
-    setGen(gen + 1)
+  const runSimulation = () => {
 
-    // if simulation is stopped return
-    if (isRunning == false) {
+    if (!isRunning) {
       return;
     }
 
@@ -122,7 +87,7 @@ import {
     squares.forEach((row, i) =>{
       row.forEach((column, j) =>{
 
-        // check neibors
+        // check neighbors
         let neighbors = countLiveNeibors(i, j)
         // console.log(neighbors)
         // if/else statement --> if for if square is alive and else for if square is dead
@@ -143,25 +108,35 @@ import {
       })
     })
     // recursively call the function again every second
-    t = setTimeout(runSimulation, 1000);
+    timeout = setTimeout(runSimulation, 1000);
+    setGen((gen) => gen+=1)
   }
 
   const startSimulation = () => {
     // sets running state
     setIsRunning(true)
-    // call runSimulation() to start the algo
     runSimulation()
   }
 
   const stopSimulation = () => {
-    clearInterval(t)
-    // sets running state
     setIsRunning(false)
-  }
+    clearTimeout(timeout)
+   }
 
   const preset1 = () => {
+    
     // sets the square state with presets imported from presets file
     setSquares([...squares1])
+  }
+  const preset2 = () => {
+    setSquares([...squares2])
+
+  }
+
+  const resetSim = () => {
+    setGen(0)
+    setSquares([])
+    setSquares(Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0)))
   }
   
   return (
@@ -184,10 +159,12 @@ import {
           <ButtonGroup className={classes.controls} color="primary" variant="contained" aria-label="Buttons for controlling game of life">
             <Button onClick={startSimulation}>Start</Button>
             <Button onClick={stopSimulation}>Stop</Button>
-            <Button>Reset</Button>
+            <Button onClick={resetSim}>Reset</Button>
           </ButtonGroup>
           <ButtonGroup className={classes.controls} color="primary" variant="contained" aria-label="Buttons for setting starting point with preset squares">
             <Button onClick={preset1}>Preset 1</Button>
+            <Button onClick={preset2}>Preset 2</Button>
+
           </ButtonGroup>
         </Grid>
       </Grid>
