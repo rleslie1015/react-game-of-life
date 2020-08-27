@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/740f2f30-496d-4e80-a1c1-1c4c8d9a5d40/deploy-status)](https://app.netlify.com/sites/cranky-euclid-a09a7b/deploys)
+
 # React Game Of Life
 
 John Conways Game of Life is a cellular automation.
