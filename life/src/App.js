@@ -6,7 +6,6 @@ import { cloneDeep } from 'lodash';
 import Board from "./Board";
 import Rules from "./Rules";
 
-
 // material ui
 import {
   Container,
