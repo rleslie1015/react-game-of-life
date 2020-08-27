@@ -1,29 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 //material ui
 import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { useStyles } from "./appStyles";
 
-const useStyles = makeStyles({
-  container: {
-    maxWidth: 500,
-  },
-  gridSquare: {
-    width: 20,
-    height: 20,
-    boxSizing: "border-box",
-    border: "1px solid grey",
-  },
-});
 const Board = ({ squares, setSquares, handleMouseMove }) => {
   const classes = useStyles();
 
-
-
   return (
     <Grid container className={classes.container}>
-      { // outter map loops through the rows 
-        // inner map loops through the columns 
-        //this creates the grid
+      { // outter map loops through the rows // inner map loops through the columns 
       squares.map((rows, i) =>
         rows.map((column, j) => (
           <div
@@ -32,10 +17,7 @@ const Board = ({ squares, setSquares, handleMouseMove }) => {
                 handleMouseMove(i, j)
               }
             }}
-            item
             key={`${i}-${j}`}
-            row={i}
-            column={j}
             className={classes.gridSquare}
             // the nested array gets updated in the onClick function for each square and updates state with setSquares()
             onClick={() => {

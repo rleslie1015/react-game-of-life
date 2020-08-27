@@ -19,7 +19,16 @@ const useStyles = makeStyles({
     padding: '0 30px',
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)', 
     margin: 20,
-  }
+  },
+  container: {
+    maxWidth: 500,
+  },
+  gridSquare: {
+    width: 20,
+    height: 20,
+    boxSizing: "border-box",
+    border: "1px solid grey",
+  },
 });
 
 export {useStyles}

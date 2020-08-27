@@ -24,8 +24,12 @@ const App = () => {
   const [squares, setSquares] = useState(() => { // using an arrow function so this only renders once
     return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
   })
+
+  const useEffect = (()=>{
+
+  }, [squares])
   
-  const countLiveNeibors = (r, c) => {
+  const countLive = (r, c) => {
     let liveCount = 0;
 
     // loop through numbers needed to select all neibors 
@@ -45,14 +49,14 @@ const App = () => {
     return liveCount;
   }
 
-  const runSimulation = () => {
+  const runOnce = () => {
     if (!isRunning) {
       return;
     }
     squares.forEach((row, i) =>{
       row.forEach((column, j) =>{
          // check neighbors
-         let neighbors = countLiveNeibors(i, j)
+         let neighbors = countLive(i, j)
          // if/else statement --> if square is alive else if square is dead
          if (squares[i][j]) {
            // if 1 or no neighbors or if more than 4 neibors
@@ -77,13 +81,13 @@ const App = () => {
     // sets running state
     clearInterval(intervalId)
     setIsRunning(true)
-    const interval = setInterval(runSimulation, 100);
+    const interval = setInterval(runOnce, 100);
     setIntervalId(interval);
   }
 
   const stopSimulation = () => {
+    clearInterval(intervalId)
     setIsRunning(false)
-    clearTimeout(intervalId)
    }
 
   const preset1 = () => {
@@ -92,28 +96,26 @@ const App = () => {
   }
   const preset2 = () => {
     setSquares([...squares2])
-
   }
 
-  const resetSim = () => {
+  const reset = () => {
     setGen(0)
     setSquares([])
     setSquares(Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0)))
   }
 
   const handleMouseMove = (i,j) => {
-    console.log("llllll")
+    // if square is 0 replace with 1 and keep 1's 
     squares[i][j] == 0 
     ? squares[i].splice([j], 1, 1) // delete the value of squares[i][k] (0) and replace with 1
     : 
-    squares[i].splice([j], 1, 1) // delete the value of squares[i][k] (0) and replace with 0
+    squares[i].splice([j], 1, 1) 
     
-    setSquares([...squares]); //
-    // setSquares() 
+    setSquares([...squares]); 
   }
+
   const toggleSquare = (x, y) => {
     squares[x][y] = squares[x][y] ? 0 : 1;
-    // setSquares(squares)
   }
   
   return (
@@ -134,10 +136,10 @@ const App = () => {
         {/* Game controls */}
         <Grid item className={classes.controlSection}>
           <ButtonGroup className={classes.controls} color="primary" variant="contained" aria-label="Buttons for controlling game of life">
-            <Button onClick={runSimulation}>Step</Button>
+            <Button onClick={runOnce}>Step</Button>
             <Button onClick={startSimulation}>Start</Button>
             <Button onClick={stopSimulation}>Stop</Button>
-            <Button onClick={resetSim}>Reset</Button>
+            <Button onClick={reset}>Reset</Button>
           </ButtonGroup>
           <ButtonGroup className={classes.controls} color="primary" variant="contained" aria-label="Buttons for setting starting point with preset squares">
             <Button onClick={preset1}>Preset 1</Button>
