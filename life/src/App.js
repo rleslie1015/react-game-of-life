@@ -20,12 +20,11 @@ const App = () => {
   const classes = useStyles();
   const [gen, setGen] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
+  const [intervalId, setIntervalId] = useState(0);
   const [squares, setSquares] = useState(() => { // using an arrow function so this only renders once
     return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
   })
   
-  const [intervalId, setIntervalId] = useState(0);
-
   const countLiveNeibors = (r, c) => {
     let liveCount = 0;
 
@@ -52,27 +51,25 @@ const App = () => {
     }
     squares.forEach((row, i) =>{
       row.forEach((column, j) =>{
-        // check neighbors
-        let neighbors = countLiveNeibors(i, j)
-        // if/else statement --> if square is alive else if square is dead
-        if (squares[i][j]) {
-          // if 1 or no neighbors or if more than 4 neibors
-          if (neighbors <= 1 || neighbors >= 4){
-            // it dies
-            squares[i][j] = 0
-          }
-        } else {
-          // if the perfect amount of neighbors
-          if (neighbors === 3) {
-
-            // dead square comes alive 
-            squares[i][j] = 1
-          }
-        }
+         // check neighbors
+         let neighbors = countLiveNeibors(i, j)
+         // if/else statement --> if square is alive else if square is dead
+         if (squares[i][j]) {
+           // if 1 or no neighbors or if more than 4 neibors
+           if (neighbors <= 1 || neighbors >= 4){
+             // it dies
+             squares[i][j] = 0
+           }
+         } else {
+           // if the perfect amount of neighbors
+           if (neighbors === 3) {
+ 
+             // dead square comes alive 
+             squares[i][j] = 1
+              }
+            }
       })
-    })
-    // recursively call the function again every second
-    
+    })    
     setGen((gen) => gen+=1)
   }
   
@@ -90,7 +87,6 @@ const App = () => {
    }
 
   const preset1 = () => {
-    
     // sets the square state with presets imported from presets file
     setSquares([...squares1])
   }
@@ -105,9 +101,19 @@ const App = () => {
     setSquares(Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0)))
   }
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (i,j) => {
     console.log("llllll")
-    setSquares()
+    squares[i][j] == 0 
+    ? squares[i].splice([j], 1, 1) // delete the value of squares[i][k] (0) and replace with 1
+    : 
+    squares[i].splice([j], 1, 1) // delete the value of squares[i][k] (0) and replace with 0
+    
+    setSquares([...squares]); //
+    // setSquares() 
+  }
+  const toggleSquare = (x, y) => {
+    squares[x][y] = squares[x][y] ? 0 : 1;
+    // setSquares(squares)
   }
   
   return (
@@ -122,7 +128,7 @@ const App = () => {
 
         <Grid item xs={12} md={7} className={classes.board}>
             <Typography>Generation: {gen} </Typography>
-            <Board squares={squares} setSquares={setSquares} handleMouseMove={handleMouseMove}/>
+            <Board squares={squares} setSquares={setSquares} toggleSquare={toggleSquare} handleMouseMove={handleMouseMove}/>
         </Grid>
 
         {/* Game controls */}

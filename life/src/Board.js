@@ -27,7 +27,11 @@ const Board = ({ squares, setSquares, handleMouseMove }) => {
       squares.map((rows, i) =>
         rows.map((column, j) => (
           <div
-            onMouseEnter={handleMouseMove}
+             onMouseEnter={(e)=>{
+              if (e.shiftKey) {
+                handleMouseMove(i, j)
+              }
+            }}
             item
             key={`${i}-${j}`}
             row={i}
