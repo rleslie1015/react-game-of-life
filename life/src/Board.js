@@ -1,29 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 //material ui
 import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { useStyles } from "./appStyles";
 
-const useStyles = makeStyles({
-  container: {
-    maxWidth: 500,
-  },
-  gridSquare: {
-    width: 20,
-    height: 20,
-    boxSizing: "border-box",
-    border: "1px solid grey",
-  },
-});
 const Board = ({ squares, setSquares, handleMouseMove }) => {
   const classes = useStyles();
-
-
-
   return (
     <Grid container className={classes.container}>
-      { // outter map loops through the rows 
-        // inner map loops through the columns 
-        //this creates the grid
+      { // outter map loops through the rows // inner map loops through the columns 
       squares.map((rows, i) =>
         rows.map((column, j) => (
           <div
@@ -32,20 +16,11 @@ const Board = ({ squares, setSquares, handleMouseMove }) => {
                 handleMouseMove(i, j)
               }
             }}
-            item
             key={`${i}-${j}`}
-            row={i}
-            column={j}
             className={classes.gridSquare}
             // the nested array gets updated in the onClick function for each square and updates state with setSquares()
             onClick={() => {
-                // console.log(i,j)
-                // to toggle a square we target it like --> squares[i][k]
-                // the splice method gets called on the array `squares[i]` EX: squares[0] is the complete first row
-                // the first param [k] points to index [k] on that row. 
-                // the second is the number of elements(squares) we want to replace/delete 
-                // the last is the value we want at that square 
-            
+
               squares[i][j] == 0 
               ? 
               squares[i].splice([j], 1, 1) // delete the value of squares[i][k] (0) and replace with 1
@@ -57,7 +32,7 @@ const Board = ({ squares, setSquares, handleMouseMove }) => {
             }}
             // set the background color of the square depending on the value 
             style={{
-              backgroundColor: squares[i][j] == 0 ? null : "red",
+              backgroundColor: squares[i][j] == 0 ? null : "rgba(255, 105, 135, .3)",
             }}
           />
         ))
