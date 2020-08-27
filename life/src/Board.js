@@ -21,13 +21,7 @@ const Board = ({ squares, setSquares, handleMouseMove }) => {
             className={classes.gridSquare}
             // the nested array gets updated in the onClick function for each square and updates state with setSquares()
             onClick={() => {
-                // console.log(i,j)
-                // to toggle a square we target it like --> squares[i][k]
-                // the splice method gets called on the array `squares[i]` EX: squares[0] is the complete first row
-                // the first param [k] points to index [k] on that row. 
-                // the second is the number of elements(squares) we want to replace/delete 
-                // the last is the value we want at that square 
-            
+
               squares[i][j] == 0 
               ? 
               squares[i].splice([j], 1, 1) // delete the value of squares[i][k] (0) and replace with 1
@@ -39,7 +33,7 @@ const Board = ({ squares, setSquares, handleMouseMove }) => {
             }}
             // set the background color of the square depending on the value 
             style={{
-              backgroundColor: squares[i][j] == 0 ? null : "red",
+              backgroundColor: squares[i][j] == 0 ? null : "rgba(255, 105, 135, .3)",
             }}
           />
         ))
