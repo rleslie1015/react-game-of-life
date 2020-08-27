@@ -19,15 +19,11 @@ import { useStyles } from './appStyles';
 const App = () => {
   const classes = useStyles();
   const [gen, setGen] = useState(0);
-  const [isRunning, setIsRunning] = useState(true);
+  const [isRunning, setIsRunning] = useState(false);
   const [intervalId, setIntervalId] = useState(0);
   const [squares, setSquares] = useState(() => { // using an arrow function so this only renders once
     return Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0))
   })
-
-  const useEffect = (()=>{
-
-  }, [squares])
   
   const countLive = (r, c) => {
     let liveCount = 0;
@@ -50,9 +46,7 @@ const App = () => {
   }
 
   const runOnce = () => {
-    if (!isRunning) {
-      return;
-    }
+
     squares.forEach((row, i) =>{
       row.forEach((column, j) =>{
          // check neighbors
@@ -78,11 +72,10 @@ const App = () => {
   }
   
   const startSimulation = () => {
-    // sets running state
     clearInterval(intervalId)
-    setIsRunning(true)
     const interval = setInterval(runOnce, 100);
     setIntervalId(interval);
+    setIsRunning(true)
   }
 
   const stopSimulation = () => {
@@ -91,20 +84,25 @@ const App = () => {
    }
 
   const preset1 = () => {
+     if (isRunning) return
     // sets the square state with presets imported from presets file
     setSquares([...squares1])
   }
   const preset2 = () => {
+    if (isRunning) return
     setSquares([...squares2])
   }
 
   const reset = () => {
+    if (isRunning) return
     setGen(0)
     setSquares([])
     setSquares(Array.from({length: 25}).map(() => Array.from({length: 25}).fill(0)))
   }
 
   const handleMouseMove = (i,j) => {
+    if (isRunning) return
+
     // if square is 0 replace with 1 and keep 1's 
     squares[i][j] == 0 
     ? squares[i].splice([j], 1, 1) // delete the value of squares[i][k] (0) and replace with 1
@@ -115,6 +113,8 @@ const App = () => {
   }
 
   const toggleSquare = (x, y) => {
+    if (isRunning) return
+
     squares[x][y] = squares[x][y] ? 0 : 1;
   }
   
