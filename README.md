@@ -29,5 +29,11 @@ A cellular automaton is a collection of "colored" cells on a grid that each live
 - Step through each generation 
 - Get a random configuration
 
+## Future Features
+- Add Custom Speed
+- Add Glider and Rocket Patterns in Presets
+
+
+
 ### Project Planning
 https://trello.com/b/Qbk4Pwhb/game-of-life

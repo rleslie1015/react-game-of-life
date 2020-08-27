@@ -5,7 +5,6 @@ import { useStyles } from "./appStyles";
 
 const Board = ({ squares, setSquares, handleMouseMove }) => {
   const classes = useStyles();
-
   return (
     <Grid container className={classes.container}>
       { // outter map loops through the rows // inner map loops through the columns 
