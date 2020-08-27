@@ -14,8 +14,10 @@ const useStyles = makeStyles({
     border: "1px solid grey",
   },
 });
-const Board = ({ squares, setSquares }) => {
+const Board = ({ squares, setSquares, handleMouseMove }) => {
   const classes = useStyles();
+
+
 
   return (
     <Grid container className={classes.container}>
@@ -24,7 +26,8 @@ const Board = ({ squares, setSquares }) => {
         //this creates the grid
       squares.map((rows, i) =>
         rows.map((column, j) => (
-          <Grid
+          <div
+            onMouseEnter={handleMouseMove}
             item
             key={`${i}-${j}`}
             row={i}
