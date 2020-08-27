@@ -32,11 +32,11 @@ const App = () => {
     for (let x = -1; x <= 1; x += 1) {
       for (let y = -1; y <= 1; y += 1) { 
         
-        let i = r + x,
-            j = c + y;
+        let row = r + x,
+            col = c + y;
 
-          //if (i >= 0 && i < 25  // i is within range  && j >= 0 && j < 25 // j is within range && !(y === 0 && x === 0) // not itself  && squares[i][j]) { // square is live (not 0)
-        if (i >= 0 && i < 25 && j >= 0 && j < 25 && !(y === 0 && x === 0) && squares[i][j]) { 
+       //if row is within range  && col is within range  && not counting itself   && square is live 
+        if (row >= 0 && row < 25 && col >= 0 && col < 25 && !(y === 0 && x === 0) && squares[row][col]) { 
               liveCount += 1; 
             }
       }
@@ -46,23 +46,22 @@ const App = () => {
   }
 
   const runOnce = () => {
-
     squares.forEach((row, i) =>{
       row.forEach((column, j) =>{
          // check neighbors
          let neighbors = countLive(i, j)
-         // if/else statement --> if square is alive else if square is dead
+         // for live squares
          if (squares[i][j]) {
            // if 1 or no neighbors or if more than 4 neibors
            if (neighbors <= 1 || neighbors >= 4){
              // it dies
              squares[i][j] = 0
            }
+        // for dead squares
          } else {
            // if the perfect amount of neighbors
            if (neighbors === 3) {
- 
-             // dead square comes alive 
+             // it lives
              squares[i][j] = 1
               }
             }
