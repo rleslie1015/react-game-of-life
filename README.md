@@ -22,7 +22,7 @@ A cellular automaton is a collection of "colored" cells on a grid that each live
 - Use the yarn command to install dependencies including:
   - React
   - Material UI
-- Once the dependencies are finished installing, use the yarn start command inside the root directory to open the app in your local browser of choice
+- Once the dependencies are finished installing, use the yarn start command inside the life directory to open the app in your local browser of choice
 
 ## Features 
 - Toggle any square by clicking
