@@ -4,8 +4,10 @@ import './index.css';
 import App from './App';
 
 //theme
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { red, purple } from '@material-ui/core/colors';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 
 
@@ -26,6 +28,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <App />
+     <div style={{margin: 20}} />
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

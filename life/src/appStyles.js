@@ -2,6 +2,15 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
+  playingState: {
+    border: '5px solid rgb(44 66 126)'
+  },
+  title: {
+    marginTop: 15,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '4em'
+    },
+  },
   rulesSection: {
     // background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     borderRadius: 3,
@@ -29,13 +38,14 @@ const useStyles = makeStyles((theme) => ({
   },
   gridContainer: {
     marginTop: 25,
-    flexDirection: "column-reverse",
-     alignItems: "center",
-     justifyContent: 'space-between',
+    alignItems: "center",
+    justifyContent: 'space-between',
     [theme.breakpoints.down('lg')]: {
       flexDirection: 'row'
-
-    }
+    },
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column-reverse",
+    }, 
   },  
   gridSquare: {
     width: 25,
@@ -57,7 +67,14 @@ const useStyles = makeStyles((theme) => ({
   wikiLink: {
     textDecoration: 'none',
     color: '#3f51b5',
-  },
+  },  
+  mainWrapper: {
+    minHeight: '100%',
+
+    /* Equal to height of footer */
+    /* But also accounting for potential margin-bottom of last child */
+    marginNottom: '-50px'
+  }
 }));
 
 export {useStyles}

@@ -1,19 +1,21 @@
-import React, { useState, useMemo, useCallback, useRef } from "react";
+import React, { useState } from "react";
 import { useCountRenders } from "./useCountRenders";
-import { cloneDeep } from "lodash";
 
 //components
 import Board from "./Board";
 import Rules from "./Rules";
+import GameControls from './GameControls';
 
 // material ui
 import {
   Container,
   Typography,
-  Grid,
-  Button,
   ButtonGroup,
+  Grid
 } from "@material-ui/core";
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+
 //other
 import { squares1, squares2, squaresL } from "./presets";
 import { useStyles } from "./appStyles";
@@ -25,7 +27,7 @@ const App = () => {
   const [gen, setGen] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [intervalId, setIntervalId] = useState(0);
-  const [speed, setSpeed] = useState(100);
+
   const [squares, setSquares] = useState(() => {
     // using an arrow function so this only renders once
     return Array.from({ length: 25 }).map(() =>
@@ -89,7 +91,7 @@ const App = () => {
 
   const startSimulation = () => {
     clearInterval(intervalId);
-    const interval = setInterval(runOnce, speed);
+    const interval = setInterval(runOnce, 500);
     setIntervalId(interval);
     setIsRunning(true);
   };
@@ -148,11 +150,11 @@ const App = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h1" color="primary" align="center">
+    <>
+    <Container class='wrapper'>
+      <Typography variant="h1" color="primary" align="center" className={classes.title}>
         Game of Life
       </Typography>
-
       <Grid
         container
         className={classes.gridContainer}
@@ -160,91 +162,17 @@ const App = () => {
 
         <Grid item xs={9} sm={7} md={3} lg={3} className={classes.rulesSection}>
           {/* Game controls */}
-          <ButtonGroup
-            className={classes.controls}
-            color="primary"
-            variant="contained"
-            aria-label="Button for launching rules pop up."
-          >
-            <Rules />
-          </ButtonGroup>
-          <ButtonGroup
-            className={classes.controls}
-            color="primary"
-            variant="contained"
-            aria-label="Buttons for controlling game of life"
-          >
-            <Button
-              variant="outlined"
-              onClick={runOnce}
-              className={classes.button}
-            >
-              Step
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={startSimulation}
-              className={classes.button}
-            >
-              Start
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={stopSimulation}
-              className={classes.button}
-            >
-              Stop
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={reset}
-              className={classes.button}
-            >
-              Reset
-            </Button>
-          </ButtonGroup>
-          <ButtonGroup
-            className={classes.controls}
-            color="primary"
-            variant="contained"
-            aria-label="Buttons for setting starting point with preset squares"
-          >
-            <Button
-              variant="outlined"
-              onClick={preset1}
-              className={classes.button}
-            >
-              Preset 1
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={preset2}
-              className={classes.button}
-            >
-              Preset 2
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={presetL}
-              className={classes.button}
-            >
-              Preset "L"
-            </Button>
-          </ButtonGroup>
-          <ButtonGroup
-            className={classes.controls}
-            color="primary"
-            variant="contained"
-            aria-label="Buttons for setting starting point with preset squares"
-          >
-            <Button
-              variant="outlined"
-              onClick={random}
-              className={classes.button}
-            >
-              Random
-            </Button>
-          </ButtonGroup>
+          <GameControls 
+            runOnce={runOnce}
+            isRunning={isRunning}
+            startSimulation={startSimulation}
+            stopSimulation={stopSimulation}
+            reset={reset}
+            preset1={preset1}
+            preset2={preset2}
+            presetL={presetL}
+
+            />
         </Grid>
 
         <Grid item xs={12} md={5} lg={6} className={classes.board}>
@@ -258,7 +186,18 @@ const App = () => {
         </Grid>
       </Grid>
 
+    <div class='push'/>
     </Container>
+    <footer classes='footer'>
+      <a href='https://github.com/rleslie1015'>
+        <GitHubIcon />
+      </a>
+      <a href='https://www.linkedin.com/in/leslie-rodriguez1994/'>
+        <LinkedInIcon />
+      </a>
+    </footer>
+</>
+
   );
 };
 

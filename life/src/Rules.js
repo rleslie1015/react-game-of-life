@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography
 } from '@material-ui/core';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -50,6 +51,11 @@ export default function Rules() {
         <DialogContent>
           <DialogContentText >
             <div className={classes.rules}>
+              <Typography color='primary'><strong>Click</strong> to toggle squares individually or <strong>hold down shift</strong> to "draw" with the mouse. 
+              <br/> Click {" "} ▶️ to start the cell automation once you are happy with the grid.
+              <br/> Buttons are disabled while the simulation is running. <br/>
+              <br/> Draw effect is not supported on mobile, but you can still use the simulation with buttons! Try a preset or the random button, then hit {" "} ▶️ {" "}. </Typography>
+              
                   <p>
                     Every square that is populated represents a live cell. <br/>
                      The rules for <strong>live</strong> cells are:
@@ -86,7 +92,7 @@ export default function Rules() {
               Learn More
               </a>
           </Button>
-          
+
           <Button onClick={handleClose} autoFocus color="secondary" className={classes.wikiLInk}>
            OK
           </Button>
