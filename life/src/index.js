@@ -12,16 +12,14 @@ import { red, purple } from '@material-ui/core/colors';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: purple[500],
+      main: '#3f51b5',
+
+      
     },
     secondary: {
-      main: red[500],
+      main: '#d96878',
     },
-  },
-  status: {
-    on: red[500],
-    off: purple[5000]
-  },
+  }
 });
 
 ReactDOM.render(
